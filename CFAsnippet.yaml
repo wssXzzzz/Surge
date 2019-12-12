@@ -1,0 +1,27 @@
+port: 7890
+socks-port: 7891
+redir-port: 7892
+allow-lan: false
+mode: Rule
+log-level: debug
+external-controller: 127.0.0.1:9090
+secret: ""
+dns:
+  enable: true
+  ipv6: false
+  listen: 127.0.0.1:33737
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16 # if you don't know what it is, don't change it
+  nameserver:
+    - '223.5.5.5' 
+    - '119.29.29.29'        # 这里开始的DNS可以换成其他DNS，尽可能多设置几个，无需考虑污染
+    - '114.114.114.114'
+    - 'tls://dns.google'
+    - 'tls://dns.rubyfish.cn:853'
+  fallback: # concurrent request with nameserver, fallback used when GEOIP country isn't CN
+    - tls://dns.rubyfish.cn:853 # dns over tls
+    - https://1.1.1.1/dns-query # dns over https
+  fallback-filter:
+    geoip: true # default
+    ipcidr: # ips in these subnets will be considered polluted
+      - 240.0.0.0/4
